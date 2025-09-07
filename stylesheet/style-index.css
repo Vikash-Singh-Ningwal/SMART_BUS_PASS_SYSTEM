@@ -1,0 +1,302 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+    color: #1a1a4b;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: sticky;
+    top:0;
+    z-index:1000;
+    flex-wrap: wrap;
+}
+
+.logo img {
+    width: 180px;
+    height: auto;
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+nav a {
+    text-decoration: none;
+    color: #1a1a4b;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #333366;
+}
+
+.signup-btn {
+    border: 2px solid #1a1a4b;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.signup-btn:hover {
+    background-color: #1a1a4b;
+    color: #fff;
+}
+
+/* Hamburger button */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: #1a1a4b;
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+/* Hero Section */
+.hero {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:40px;
+    padding:60px;
+    flex-wrap:wrap;
+    background: #fff;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    margin:20px;
+}
+
+.hero-text {
+    flex:1;
+    min-width:300px;
+}
+
+.hero-text h1 {
+    font-size:3.5rem;
+    font-weight:700;
+    margin-bottom:20px;
+    line-height:1.2;
+    color:#1a1a4b;
+}
+
+.hero-text p {
+    font-size:1.1rem;
+    margin-bottom:30px;
+    color:#4a4a7a;
+}
+
+.login-btn {
+    background-color:#1a1a4b;
+    color:#fff;
+    padding:12px 30px;
+    border:none;
+    border-radius:25px;
+    font-weight:600;
+    cursor:pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color:#333366;
+}
+
+.hero-image img {
+    width:100%;
+    max-width:500px;
+    border-radius:10px;
+}
+
+/* Mobile Pass & How It Works */
+.mobile-pass {
+    display:flex;
+    align-items:center;
+    gap:40px;
+    flex-wrap:wrap;
+    margin:40px 20px;
+    padding:40px;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+.mobile-pass:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.mobile-pass-text {
+    flex:1;
+    min-width:280px;
+}
+
+.mobile-pass-text h2 {
+    font-size:2.5rem;
+    font-weight:700;
+    margin-bottom:25px;
+    color:#1a1a4b;
+}
+
+.mobile-pass-text ul {
+    list-style:none;
+    padding-left:0;
+}
+
+.mobile-pass-text ul li {
+    font-size:1.1rem;
+    margin-bottom:15px;
+    color:#4a4a7a;
+}
+
+.mobile-pass-text ul li strong {
+    color:#1a1a4b;
+}
+
+.mobile-pass-image {
+    flex:1;
+    text-align:center;
+    min-width:280px;
+}
+
+.mobile-pass-image img {
+    width:100%;
+    max-width:400px;
+    border-radius:10px;
+}
+
+/* Pricing Plans */
+.pricing-plans {
+    text-align:center;
+    margin:40px 20px;
+}
+
+.pricing-plans h2 {
+    font-size:2.5rem;
+    font-weight:700;
+    color:#1a1a4b;
+    margin-bottom:20px;
+}
+
+.pricing-plans p {
+    font-size:1rem;
+    color:#4a4a7a;
+    margin-bottom:40px;
+}
+
+.plan-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.plan-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 250px;
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.plan-card h3 {
+    font-size: 1.5rem;
+    color: #1a1a4b;
+    margin-bottom: 10px;
+}
+
+.plan-card .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f4a261;
+    margin-bottom: 15px;
+}
+
+.plan-card ul.plan-features {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.plan-card .select-btn {
+    display: inline-block;
+    background-color: #f4a261;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.plan-card .select-btn:hover {
+    background-color: #e07a5f;
+}
+
+/* Footer */
+footer {
+    background-color:#1a1a4b;
+    color:#fff;
+    padding:30px 20px;
+    text-align:center;
+    font-size:0.9rem;
+}
+
+/* Responsive */
+@media(max-width:900px){
+    header { flex-direction: row; justify-content: space-between; padding: 15px 30px; }
+    nav { display:none; flex-direction: column; gap:15px; width:100%; text-align:center; position:absolute; top:70px; left:0; background:#fff; box-shadow:0 6px 20px rgba(0,0,0,0.1); padding:20px 0; border-top:1px solid #eee; }
+    nav.active { display:flex; }
+    .hamburger { display:flex; }
+    .hero { flex-direction: column; text-align:center; padding:30px; margin:20px 0; }
+    .hero-text h1 { font-size:2.5rem; }
+    .mobile-pass { flex-direction: column; text-align:center; padding:30px; }
+    .mobile-pass:nth-child(even) { flex-direction: column; }
+    .mobile-pass-image { margin-bottom:20px; }
+    .plan-container { flex-direction: column; align-items:center; }
+    .plan-card { width:80%; max-width:300px; margin-bottom:20px; }
+}
+
+@media(max-width:600px){
+    .hero-text h1 { font-size:2rem; }
+    .mobile-pass-text h2 { font-size:1.8rem; }
+    .login-btn { padding:10px 20px; }
+    .pricing-plans h2 { font-size:1.8rem; }
+    header { padding:10px 20px; }
+}

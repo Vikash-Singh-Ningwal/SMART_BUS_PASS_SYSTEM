@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Buy Pass — Smart Bus Pass</title>
+  <link rel="stylesheet" href="./stylesheet/style-buyPass.css" />
+  <link rel="stylesheet" href="./stylesheet/style-login.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Razorpay Checkout -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Firebase SDKs (v9.22.2 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="./firebase.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Buy a Bus Pass</h1>
+      <p class="muted">Your wallet will be charged. A QR will be generated for validation.</p>
+      
+      <section id="pricing-plans" class="pricing-plans">
+        <h2>CHOOSE YOUR BEST PLAN</h2>
+        <p>A transparent guide without hidden charges.</p>
+
+        <div class="plan-container">
+          <div class="plan-card" data-plan="Daily Pass" data-price="50">
+            <h3>Daily Pass</h3>
+            <p class="price">₹50 <span>per day</span></p>
+            <ul>
+              <li>Valid for 1 day</li>
+              <li>Unlimited rides on selected route</li>
+            </ul>
+          </div>
+
+          <div class="plan-card" data-plan="Weekly Pass" data-price="199">
+            <h3>Weekly Pass</h3>
+            <p class="price">₹199 <span>per week</span></p>
+            <ul>
+              <li>Valid for 7 days</li>
+              <li>Save more compared to daily tickets</li>
+              <li>Best for regular commuters</li>
+            </ul>
+          </div>
+
+          <div class="plan-card" data-plan="Monthly Pass" data-price="699">
+            <h3>Monthly Pass</h3>
+            <p class="price">₹699 <span>per month</span></p>
+            <ul>
+              <li>Valid for 30 days</li>
+              <li>Unlimited rides on chosen route</li>
+              <li>Maximum convenience & savings</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="priceRow">
+        <span class="muted">Selected Plan:</span> <span id="plan">—</span><br>
+        <span class="muted">Price:</span> <span class="price" id="price">—</span>
+      </div>
+
+      <div class="row end">
+        <button class="btn alt" onclick="location.href='dashboard.html'">Back</button>
+        <button class="btn" id="purchaseBtn">Purchase Pass</button>
+      </div>
+    </div>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <!-- External JS -->
+  <script src="./scripts/buyPass.js"></script>
+</body>
+</html>

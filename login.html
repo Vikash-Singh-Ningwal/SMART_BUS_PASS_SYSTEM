@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartWallet Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./stylesheet/style-login.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="./scripts/login.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <div class="logo">
+        <img src="./Assets/logo-ligth.png" alt="Bus Icon">
+      </div>
+      <img src="./Assets/Illustration-Left.png" alt="Illustration">
+    </div>
+    <div class="right">
+      <h1>Hello! <br> Welcome back!</h1>
+      <p>Let’s Login to Your Account</p>
+      <form id="login-form">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+          <span class="error" id="email-error"></span>
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+          <span class="toggle-password" id="toggle-password">Show</span>
+          <span class="error" id="password-error"></span>
+        </div>
+        <button type="submit" class="login-btn" disabled>Login</button>
+      </form>
+      <p class="signup">Don't have an account? <a href="./Signup.html">Sign Up now</a></p>
+      <div class="bottom-links">
+        <span>Privacy Policy</span>
+        <span>Cookies Settings</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
