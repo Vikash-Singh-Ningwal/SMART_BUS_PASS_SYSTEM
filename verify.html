@@ -2,113 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Smart Bus Pass Verification</title>
-
-  <!-- Firebase & QR libraries -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartBus — Verifier</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0062ff, #4facfe);
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 420px;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      padding: 30px 25px 40px;
-      text-align: center;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h2 {
-      font-size: 1.5rem;
-      color: #222;
-      margin-bottom: 10px;
-    }
-
-    p.subtitle {
-      color: #666;
-      font-size: 0.95rem;
-      margin-bottom: 25px;
-    }
-
-    #reader {
-      width: 100%;
-      border: 2px solid #0062ff;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    #result {
-      margin-top: 25px;
-      font-size: 0.95rem;
-      padding: 18px;
-      background: #f8faff;
-      border-radius: 12px;
-      border: 1px solid #e3ebff;
-      line-height: 1.6;
-      transition: all 0.3s ease;
-    }
-
-    .success {
-      border-left: 4px solid #28a745;
-      background: #eafaf1;
-    }
-
-    .error {
-      border-left: 4px solid #dc3545;
-      background: #fdeeee;
-    }
-
-    .status-active {
-      color: #28a745;
-      font-weight: 600;
-    }
-
-    .status-expired {
-      color: #dc3545;
-      font-weight: 600;
-    }
-
-    footer {
-      margin-top: 25px;
-      font-size: 0.8rem;
-      color: #888;
-    }
+    :root { --primary: #1f2a56; --accent: #ffc107; --success: #22b573; --error: #ff4d4d; }
+    body { margin: 0; font-family: 'Inter', sans-serif; background: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .container { width: 95%; max-width: 450px; background: white; border-radius: 24px; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; }
+    #reader { width: 100%; border-radius: 16px; overflow: hidden; border: 4px solid var(--primary); }
+    .status-card { margin-top: 25px; padding: 20px; border-radius: 16px; display: none; text-align: left; animation: slideUp 0.3s ease; }
+    .valid { background: #eafaf1; border: 2px solid var(--success); display: block; }
+    .invalid { background: #fdeeee; border: 2px solid var(--error); display: block; }
+    .btn-reset { margin-top: 20px; width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Smart Bus Pass Verification</h2>
-    <p class="subtitle">Scan a passenger’s QR code to verify their active pass</p>
+    <h2 style="color: var(--primary);"><i class='bx bx-shield-quarter'></i> Pass Verifier</h2>
     <div id="reader"></div>
-    <div id="result">Awaiting QR scan...</div>
-    <footer>Smart Bus System © 2025</footer>
+    
+    <div id="resultCard" class="status-card">
+      <div id="statusHeader" style="font-weight: 800; font-size: 1.2rem; margin-bottom: 10px;"></div>
+      <div id="passDetails" style="font-size: 0.9rem; line-height: 1.6;"></div>
+      <button class="btn-reset" onclick="location.reload()">Scan Next Passenger</button>
+    </div>
+    
+    <p id="hint" style="color: #666; margin-top: 15px;">Awaiting Passenger QR Code...</p>
   </div>
 
   <script>
-    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBNuza4ltSYYZf5eml5jdrjh_FuI8Rappk",
       authDomain: "smart-bus-pass-system-b3950.firebaseapp.com",
@@ -121,79 +48,54 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    const resultBox = document.getElementById("result");
-
     async function verifyPass(qrValue) {
-      resultBox.className = "";
-      resultBox.innerHTML = "Verifying pass...";
-
+      const card = document.getElementById("resultCard");
+      const header = document.getElementById("statusHeader");
+      const details = document.getElementById("passDetails");
+      
       try {
-        // Query users and passes
-        const usersSnap = await db.collection("users").get();
-        let found = false;
+        // Expected format: PASS_userID_passID (as defined in buyPass.js)
+        const parts = qrValue.split('_');
+        if (parts.length < 3) throw new Error("Invalid QR Format");
 
-        for (const userDoc of usersSnap.docs) {
-          const passSnap = await userDoc.ref
-            .collection("passes")
-            .where("qrData", "==", qrValue)
-            .limit(1)
-            .get();
+        const userID = parts[1];
+        const passID = parts[2];
 
-          if (!passSnap.empty) {
-            const pass = passSnap.docs[0].data();
-            const endDate = pass.endDate?.toDate() || new Date();
-            const isActive = endDate >= new Date();
+        const passDoc = await db.collection("users").doc(userID).collection("passes").doc(passID).get();
+        const userDoc = await db.collection("users").doc(userID).get();
 
-            resultBox.className = isActive ? "success" : "error";
-            resultBox.innerHTML = `
-              <strong>Pass Verified</strong><br>
-              <b>User ID:</b> ${userDoc.id}<br>
-              <b>Plan:</b> ${pass.plan || 'N/A'}<br>
-              <b>Price:</b> ₹${(pass.price || 0).toFixed(2)}<br>
-              <b>Valid Till:</b> ${endDate.toDateString()}<br>
-              <b>Status:</b> 
-              <span class="${isActive ? 'status-active' : 'status-expired'}">
-                ${isActive ? 'Active' : 'Expired'}
-              </span>
-            `;
-            found = true;
-            break;
-          }
-        }
+        if (passDoc.exists && userDoc.exists) {
+          const pass = passDoc.data();
+          const user = userDoc.data();
+          const expiry = pass.endDate.toDate();
+          const isValid = expiry > new Date();
 
-        if (!found) {
-          resultBox.className = "error";
-          resultBox.innerHTML = "Invalid QR or pass not found.";
+          card.className = isValid ? "status-card valid" : "status-card invalid";
+          header.innerHTML = isValid ? "<i class='bx bxs-check-circle'></i> PASS VALID" : "<i class='bx bxs-x-circle'></i> PASS EXPIRED";
+          header.style.color = isValid ? "var(--success)" : "var(--error)";
+          
+          details.innerHTML = `
+            <b>Passenger:</b> ${user.username}<br>
+            <b>Plan:</b> ${pass.plan}<br>
+            <b>Expires:</b> ${expiry.toLocaleString()}<br>
+            <b>Payment ID:</b> ${pass.paymentId}
+          `;
+        } else {
+          throw new Error("Pass not found in database");
         }
       } catch (err) {
-        console.error(err);
-        resultBox.className = "error";
-        resultBox.innerHTML = "Error verifying pass: " + err.message;
+        card.className = "status-card invalid";
+        header.innerHTML = "VERIFICATION FAILED";
+        details.innerHTML = err.message;
       }
+      document.getElementById("hint").style.display = "none";
     }
 
-    function startScanner() {
-      const html5QrCode = new Html5Qrcode("reader");
-
-      html5QrCode.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        (decodedText) => {
-          html5QrCode.stop();
-          resultBox.className = "";
-          resultBox.innerHTML = `QR detected: <b>${decodedText}</b><br>Checking pass...`;
-          verifyPass(decodedText);
-        },
-        (errorMessage) => {
-        }
-      ).catch(err => {
-        console.error("Camera error:", err);
-        resultBox.className = "error";
-        resultBox.innerHTML = "Unable to access camera: " + err.message;
-      });
-    }
-
-    startScanner();
+    const scanner = new Html5Qrcode("reader");
+    scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
+      scanner.stop();
+      verifyPass(text);
+    });
   </script>
 </body>
 </html>

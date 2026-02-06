@@ -7,87 +7,98 @@ const firebaseConfig = {
   appId: "1:422432816761:web:eb86fe0ee38153833ddea8",
   measurementId: "G-H2M8MTJE4Q"
 };
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 
 let selectedPlan = null;
 let selectedPrice = null;
 
-// Select plan handler
+// Plan Selection UI Logic
 document.querySelectorAll(".plan-card").forEach(card => {
   card.addEventListener("click", () => {
+    document.querySelectorAll(".plan-card").forEach(c => c.classList.remove("selected"));
+    card.classList.add("selected");
+
     selectedPlan = card.getAttribute("data-plan");
     selectedPrice = parseInt(card.getAttribute("data-price"), 10);
-    document.getElementById("plan").innerText = selectedPlan;
-    document.getElementById("price").innerText = "₹" + selectedPrice;
+    
+    document.getElementById("planSummary").innerText = `${selectedPlan} — ₹${selectedPrice}`;
+    document.getElementById("purchaseBtn").disabled = false;
   });
 });
 
-// Purchase button
 document.getElementById("purchaseBtn").addEventListener("click", async () => {
-  if (!selectedPlan) {
-    alert("Please select a plan before purchasing.");
-    return;
-  }
-
   const user = auth.currentUser;
   if (!user) {
-    alert("Please login first!");
-    window.location.href = "./login.html";
+    alert("Please login to continue");
     return;
   }
 
-  // Razorpay checkout
-  var options = {
+  const options = {
     key: "rzp_test_RcJkKW0f4CKH0V", 
-    amount: selectedPrice * 100,
+    amount: selectedPrice * 100, 
     currency: "INR",
-    name: "Smart Bus Pass",
-    description: selectedPlan,
+    name: "SmartBus Transit",
+    description: `Purchase of ${selectedPlan}`,
+    theme: { color: "#1f2a56" },
     handler: async function (response) {
       try {
-        // Validity
+        const batch = db.batch();
+        const userRef = db.collection("users").doc(user.uid);
+        
         let start = new Date();
         let end = new Date(start);
+        
         if (selectedPlan === "Daily Pass") end.setDate(start.getDate() + 1);
-        if (selectedPlan === "Weekly Pass") end.setDate(start.getDate() + 7);
-        if (selectedPlan === "Monthly Pass") end.setMonth(start.getMonth() + 1);
+        else if (selectedPlan === "Weekly Pass") end.setDate(start.getDate() + 7);
+        else if (selectedPlan === "Monthly Pass") end.setMonth(start.getMonth() + 1);
 
-        // Save to Firestore
-        const passRef = db.collection("users").doc(user.uid).collection("passes").doc();
-        const passId = passRef.id;
-        const qrData = `${user.uid}_${passId}`;
+        const passRef = userRef.collection("passes").doc();
+        const qrData = `PASS_${user.uid}_${passRef.id}`;
 
-        await passRef.set({
+        // 1. Save Pass Details
+        batch.set(passRef, {
           plan: selectedPlan,
           price: selectedPrice,
           startDate: firebase.firestore.Timestamp.fromDate(start),
           endDate: firebase.firestore.Timestamp.fromDate(end),
-          paymentId: response.razorpay_payment_id,
           qrData: qrData,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          paymentId: response.razorpay_payment_id,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // Show success
+        // 2. Add to Transactions Sub-collection
+        const txRef = userRef.collection("transactions").doc();
+        batch.set(txRef, {
+            type: `${selectedPlan} Purchase`,
+            amount: -selectedPrice,
+            time: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // 3. CRITICAL: Update the User Document Balance
+        batch.update(userRef, {
+            balance: firebase.firestore.FieldValue.increment(-selectedPrice)
+        });
+
+        await batch.commit();
+
         document.getElementById("result").innerHTML = `
-          <p class="success"> Pass Purchased Successfully!</p>
-          <p><b>${selectedPlan}</b> valid till <b>${end.toDateString()}</b></p>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}" />
+          <div class="success-msg">
+            <i class='bx bxs-check-circle' style="font-size: 2rem;"></i>
+            <h3>Payment Successful!</h3>
+            <p>${selectedPlan} is now active until ${end.toDateString()}.</p>
+            <button class="btn btn-primary" onclick="location.href='dashboard.html'" style="margin-top:15px">Go to Dashboard</button>
+          </div>
         `;
       } catch (err) {
-        console.error("Error saving pass:", err);
-        alert("Payment successful, but failed to issue pass!");
+        console.error(err);
+        alert("Payment received, but failed to sync with database.");
       }
-    },
-    prefill: {
-      email: user.email || '',
-      contact: ""
-    },
-    theme: { color: "#1a73e8" },
+    }
   };
 
-  var rzp1 = new Razorpay(options);
-  rzp1.open();
+  const rzp = new Razorpay(options);
+  rzp.open();
 });

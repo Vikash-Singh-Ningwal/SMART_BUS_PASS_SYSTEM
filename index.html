@@ -1,121 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartWallet</title>
+    <title>SmartWallet | Modern Bus Pass System</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="./stylesheet/style-index.css" />
 </head>
-
 <body>
 
-  <header>
-  <div class="logo">
-    <img src="./Assets/logo-ligth.png" alt="Smart Wallet Logo" />
-  </div>
-
-  <nav>
-    <a href="./index.html">Home</a>
-    <a href="./Signup.html">Pricing</a>
-    <a href="./login.html">Login</a>
-    <a href="./Signup.html" class="signup-btn">Signup for Free</a>
-  </nav>
+<header>
+    <div class="logo">
+        <img src="./Assets/logo-ligth.png" alt="Smart Wallet Logo" />
+    </div>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <nav id="nav-menu">
+        <a href="./index.html">Home</a>
+        <a href="#pricing-plans">Pricing</a>
+        <a href="./login.html">Login</a>
+        <a href="./Signup.html" class="signup-btn">Signup for Free</a>
+    </nav>
 </header>
-    <section class="hero">
-        <div class="hero-text">
-            <h1>Smart Bus<br>Pass System</h1>
-            <p>Effortlessly buy, validate, and top-up bus passes in the cloud. Track your route history and usage
-                analytics with ease.</p>
+
+<section class="hero">
+    <div class="hero-text" data-aos="fade-right">
+        <h1>Smart Bus<br><span>Pass System</span></h1>
+        <p>Effortlessly buy, validate, and top-up bus passes in the cloud. Track your route history and usage analytics with ease.</p>
+        <div class="hero-btns">
             <a href="./login.html" class="login-btn">Get Started</a>
         </div>
-        <div class="hero-image">
-            <img src="./Assets/bus.png" alt="Bus Illustration">
-        </div>
-    </section>
+    </div>
+    <div class="hero-image" data-aos="zoom-in" data-aos-delay="200">
+        <img src="./Assets/bus.png" alt="Bus Illustration">
+    </div>
+</section>
 
-    <section class="mobile-pass">
-        <div class="mobile-pass-image">
-            <img src="./Assets/pass.png" alt="Mobile Bus Pass">
-        </div>
-        <div class="mobile-pass-text">
-            <h2>Mobile Bus Pass</h2>
-            <ul>
-                <li><strong>Skip Lines:</strong> Purchase passes online in seconds.</li>
-                <li><strong>Cashless Travel:</strong> Top up your wallet for instant payments.</li>
-                <li><strong>Easy Boarding:</strong> Validate rides with a QR code.</li>
-                <li><strong>Track Everything:</strong> Monitor balance and transaction history in real-time.</li>
-            </ul>
-        </div>
-    </section>
+<section class="mobile-pass">
+    <div class="mobile-pass-image" data-aos="fade-up">
+        <img src="./Assets/pass.png" alt="Mobile Bus Pass">
+    </div>
+    <div class="mobile-pass-text" data-aos="fade-left">
+        <h2>Mobile Bus Pass</h2>
+        <ul>
+            <li><strong>Skip Lines:</strong> Purchase passes online in seconds.</li>
+            <li><strong>Cashless Travel:</strong> Top up your wallet for instant payments.</li>
+            <li><strong>Easy Boarding:</strong> Validate rides with a QR code.</li>
+            <li><strong>Track Everything:</strong> Monitor balance and transaction history in real-time.</li>
+        </ul>
+    </div>
+</section>
 
-    <section class="mobile-pass">
-        <div class="mobile-pass-image">
-            <img src="./Assets/process.png" alt="Process Illustration">
-        </div>
-        <div class="mobile-pass-text">
-            <h2>How It Works</h2>
-            <ul>
-                <li><strong>Sign In / Register:</strong> Create an account or log in to access your dashboard.</li>
-                <li><strong>Buy a Pass:</strong> Choose your route and purchase a bus pass directly.</li>
-                <li><strong>Add Money:</strong> Top up your wallet for seamless payments.</li>
-                <li><strong>Travel & Validate:</strong> Show your QR code to board; check balance and transactions
-                    anytime.</li>
-            </ul>
-        </div>
-    </section>
-    <section id="pricing-plans" class="pricing-plans">
+<section class="pricing-plans" id="pricing-plans">
+    <div data-aos="fade-up">
         <h2>CHOOSE YOUR BEST PLAN</h2>
-        <p>A simple pricing table of our services, a transparent guide without hidden charges.</p>
-        <div class="plan-container">
-            <div class="plan-card">
-                <h3>Daily Pass</h3>
-                <p class="price">₹50 <span>per day</span></p>
-                <ul class="plan-features">
-                    <li>Valid for 1 day</li>
-                    <li>Unlimited rides on selected route</li>
-                </ul>
-                <a href="./signup.html" class="select-btn">Select</a>
-            </div>
-            <div class="plan-card">
-                <h3>Weekly Pass</h3>
-                <p class="price">₹199 <span>per week</span></p>
-                <ul class="plan-features">
-                    <li>Valid for 7 days</li>
-                    <li>Save more compared to daily tickets</li>
-                    <li>Best for regular commuters</li>
-                </ul>
-                <a href="./signup.html" class="select-btn">Select</a>
-            </div>
-            <div class="plan-card">
-                <h3>Monthly Pass</h3>
-                <p class="price">₹699 <span>per month</span></p>
-                <ul class="plan-features">
-                    <li>Valid for 30 days</li>
-                    <li>Unlimited rides on chosen route</li>
-                    <li>Maximum convenience & savings</li>
-                </ul>
-                <a href="./signup.html" class="select-btn">Select</a>
-            </div>
+        <p>A transparent guide without hidden charges.</p>
+    </div>
+    <div class="plan-container">
+        <div class="plan-card" data-aos="flip-left" data-aos-delay="100">
+            <h3>Daily Pass</h3>
+            <p class="price">₹50 <span>/day</span></p>
+            <ul class="plan-features">
+                <li>Valid for 1 day</li>
+                <li>Unlimited rides</li>
+            </ul>
+            <a href="./signup.html" class="select-btn">Select</a>
         </div>
-    </section>
+        <div class="plan-card featured" data-aos="flip-left" data-aos-delay="200">
+            <h3>Weekly Pass</h3>
+            <p class="price">₹199 <span>/week</span></p>
+            <ul class="plan-features">
+                <li>Valid for 7 days</li>
+                <li>Save 30% vs Daily</li>
+                <li>Regular Commuters</li>
+            </ul>
+            <a href="./signup.html" class="select-btn">Select</a>
+        </div>
+        <div class="plan-card" data-aos="flip-left" data-aos-delay="300">
+            <h3>Monthly Pass</h3>
+            <p class="price">₹699 <span>/month</span></p>
+            <ul class="plan-features">
+                <li>Valid for 30 days</li>
+                <li>Maximum Savings</li>
+            </ul>
+            <a href="./signup.html" class="select-btn">Select</a>
+        </div>
+    </div>
+</section>
 
-    <footer>
-        <p>
-            Indore 452003, Madhya Pradesh, INDIA<br>
-            Email: singhningwalvikash@gmail.com | Support: support@chalo.com | Phone: +91-8085660391<br>
-            © 2025 Smart Wallet Private Limited. All Rights Reserved.
-        </p>
-    </footer>
-    <script>
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('nav-menu');
+<footer>
+    <p>© 2025 Smart Wallet Private Limited. Built for Indore Commuters.</p>
+</footer>
 
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-    </script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 500,
+        once: true,
+        easing: 'ease-in-out'
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+</script>
 </body>
-
 </html>

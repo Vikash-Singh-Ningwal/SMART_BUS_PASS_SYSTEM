@@ -349,3 +349,113 @@ footer {
     .pricing-plans h2 { font-size:1.8rem; }
     header { padding:10px 20px; }
 }
+/* --- Global Improvements --- */
+:root {
+    --primary: #1a1a4b;
+    --accent: #f4a261;
+    --text-light: #4a4a7a;
+    --grad: linear-gradient(135deg, #1a1a4b 0%, #333366 100%);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: radial-gradient(circle at top right, #ffffff, #f0f2f5);
+}
+
+/* --- Navigation Polish --- */
+header {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+nav a::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width .3s;
+}
+
+nav a:hover::after { width: 100%; }
+
+/* --- Hero Enhancements --- */
+.hero {
+    background: transparent;
+    box-shadow: none; /* Remove box for cleaner look */
+}
+
+.hero-text h1 span {
+    color: var(--accent);
+    background: linear-gradient(to right, #f4a261, #e76f51);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-btns {
+    display: flex;
+    gap: 15px;
+}
+
+.secondary-btn {
+    padding: 12px 30px;
+    border: 2px solid var(--primary);
+    border-radius: 25px;
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+
+
+/* --- Pricing Card Polish --- */
+.plan-card {
+    border: none;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+.badge {
+    position: absolute;
+    top: 10px;
+    right: -30px;
+    background: var(--accent);
+    color: white;
+    padding: 5px 40px;
+    transform: rotate(45deg);
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.plan-card .price {
+    font-size: 2rem;
+}
+
+.select-btn {
+    box-shadow: 0 4px 15px rgba(244, 162, 97, 0.4);
+}
+
+/* --- Micro-Animations --- */
+.hero-image img {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Fix for Hamburger visibility */
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: var(--primary);
+}
