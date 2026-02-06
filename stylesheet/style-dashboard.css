@@ -16,26 +16,31 @@ body {
   background-image: radial-gradient(circle at top right, #0063f81a, transparent);
   margin: 0;
   display: flex;
+  flex-direction: column; /* Default for mobile */
   color: var(--text-dark);
+  min-height: 100vh;
 }
 
-/* Sidebar */
+/* Sidebar: Bottom Navigation for Mobile, Side for Desktop */
 .sidebar {
   background: var(--primary);
-  width: 100px;
-  min-height: 100vh;
+  width: 100%;
+  height: 70px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
-  padding: 30px 0;
+  padding: 0;
   position: fixed;
-  z-index: 100;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
 }
 
 .sidebar-item {
   color: #fff;
-  font-size: 26px;
-  margin: 20px 0;
+  font-size: 24px;
   cursor: pointer;
   opacity: 0.6;
   transition: 0.3s;
@@ -46,111 +51,121 @@ body {
   color: var(--accent);
 }
 
-/* Main Layout */
+/* Main Layout Adjustments */
 .main {
-  margin-left: 100px;
-  padding: 40px;
-  width: calc(100% - 100px);
+  margin-left: 0; /* No margin on mobile */
+  padding: 20px;
+  width: 100%;
+  padding-bottom: 90px; /* Space for bottom nav */
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
+}
+
+header {
+  flex-direction: column;
+  align-items: flex-start !important;
+  gap: 15px;
 }
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 30px;
+  grid-template-columns: 1fr; /* Single column for mobile */
+  gap: 25px;
 }
 
-/* Smart Card */
+/* Smart Card Responsive Fixes */
 .smart-card {
   background: linear-gradient(135deg, var(--primary) 0%, #3a4b8a 100%);
   border-radius: 24px;
   display: flex;
+  flex-direction: column; /* Stack vertically on mobile */
   color: white;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(31, 42, 86, 0.2);
-  min-height: 280px;
 }
 
-.card-left {
-  flex: 1;
-  padding: 35px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.card-left, .card-right {
+  padding: 25px;
+  width: 100%;
 }
 
 .card-right {
-  flex: 0.8;
   background: var(--accent);
   color: #000;
-  padding: 30px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .wallet-balance {
-  font-size: 2.8rem;
+  font-size: 2.2rem; /* Smaller font for mobile */
   font-weight: 800;
   margin: 5px 0;
-}
-
-.validity {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 12px 20px;
-  border-radius: 12px;
-  display: inline-block;
-  backdrop-filter: blur(5px);
 }
 
 /* UI Elements */
 .profile-card {
   background: var(--card);
   border-radius: var(--radius);
-  padding: 25px;
+  padding: 20px;
   box-shadow: var(--shadow);
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
 }
 
 .transaction {
   background: #fff;
-  padding: 15px 20px;
+  padding: 12px 15px;
+  font-size: 14px;
   border-radius: 15px;
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 
-.status-in { border-left: 5px solid #22b573; }
-.status-out { border-left: 5px solid #ff4d4d; }
-
+/* Buttons */
 .btn {
-  padding: 12px 24px;
-  border-radius: 12px;
-  border: none;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.2s;
+  padding: 10px 20px;
+  font-size: 14px;
+  width: 100%; /* Full width buttons on mobile */
+  margin-bottom: 5px;
 }
 
-.btn:hover { transform: translateY(-2px); }
-.btn.alt { background: #fff; border: 1px solid #ddd; }
+/* DESKTOP STYLES (Screen wider than 768px) */
+@media (min-width: 768px) {
+  body { flex-direction: row; }
 
-.wallet-qrcode img {
-  width: 140px;
-  border-radius: 12px;
-  background: #fff;
-  padding: 5px;
+  .sidebar {
+    width: 100px;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 30px;
+    top: 0;
+    bottom: auto;
+  }
+
+  .sidebar-item { margin: 20px 0; }
+
+  .main {
+    margin-left: 100px;
+    padding: 40px;
+    padding-bottom: 40px;
+  }
+
+  header {
+    flex-direction: row;
+    align-items: center !important;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .smart-card { flex-direction: row; min-height: 280px; }
+  
+  .card-left { width: 60%; }
+  .card-right { width: 40%; }
+
+  .wallet-balance { font-size: 2.8rem; }
+  
+  .btn { width: auto; margin-bottom: 0; }
 }
